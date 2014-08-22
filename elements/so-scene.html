@@ -1,0 +1,27 @@
+<link rel="import" href="./library.html">
+
+
+<polymer-element name="so-scene" attributes="renderer scene" noscript>
+  <template>
+    <style>
+      canvas {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+      }
+    </style>
+  </template>
+  <script>
+    Polymer('so-scene', {
+      ready: function() {
+        //this.renderer.setSize( window.innerWidth, window.innerHeight );
+        //var canvas = this.shadowRoot.getElementsByTagName("canvas")[0];
+        this.renderer = new THREE.WebGLRenderer({ alpha: true });
+        this.shadowRoot.appendChild( this.renderer.domElement );
+
+        this.scene = new THREE.Scene();
+        this.renderer.setSize( window.innerWidth, window.innerHeight );
+      }
+    });
+  </script>
+</polymer-element>

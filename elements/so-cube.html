@@ -1,8 +1,37 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="./library.html">
 
-<polymer-element name="so-cube" noscript>
+<polymer-element name="so-cube" attributes="tx ty tz rx ry rz sx sy sz texture" noscript>
   <template>
-    <span>Hello from <b>my-element</b>. This is my Shadow DOM.</span>
   </template>
-</polymer-element>
+  <script>
+    Polymer('so-cube', {
+      // initialize the element's model
+      attached: function() {
+        var scene = getScene(this);
+        var geometry = new THREE.BoxGeometry( 200, 200, 200 );
 
+        var texture = THREE.ImageUtils.loadTexture(
+          this.attributes.texture.value
+        );
+        texture.anisotropy = scene.renderer.getMaxAnisotropy();
+
+        var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+        mesh = new THREE.Mesh( geometry, material );
+        var _this=this;
+        ['tx','ty','tz','rx','ry','rz','sx','sy','sz'].forEach(function(prop){
+          if (_this[prop]!==undefined){
+            if(prop.indexOf('t')===0){
+              mesh.position[prop[1]] = _this[prop];
+            } else if(prop.indexOf('r')===0){
+              mesh.rotation[prop[1]] = _this[prop];
+            } else {
+              mesh.scale[prop[1]] = _this[prop];
+            }
+          }
+        });
+        scene.scene.add( mesh );
+      }
+    });
+  </script>
+</polymer-element>
