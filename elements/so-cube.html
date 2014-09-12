@@ -1,6 +1,6 @@
 <link rel="import" href="./library.html">
 
-<polymer-element name="so-cube" attributes="tx ty tz rx ry rz sx sy sz texture" noscript>
+<polymer-element name="so-cube" attributes="tx ty tz rx ry rz sx sy sz texture color" noscript>
   <template>
   </template>
   <script>
@@ -8,14 +8,22 @@
       // initialize the element's model
       attached: function() {
         var scene = getScene(this);
-        var geometry = new THREE.BoxGeometry( 200, 200, 200 );
-
-        var texture = THREE.ImageUtils.loadTexture(
-          this.attributes.texture.value
-        );
-        texture.anisotropy = scene.renderer.getMaxAnisotropy();
-
-        var material = new THREE.MeshBasicMaterial( { map: texture } );
+        var geometry = new THREE.CubeGeometry( 20, 20, 20 );
+        
+        if(this.attributes.texture){
+          var texture = THREE.ImageUtils.loadTexture(
+            this.attributes.texture.value
+          );
+          var material = new THREE.MeshLambertMaterial({
+            color: this.attributes.color.value,
+            map: texture
+          });
+        } else {
+          var material = new THREE.MeshLambertMaterial({
+            color: this.attributes.color.value,
+          });
+        }
+        
 
         mesh = new THREE.Mesh( geometry, material );
         var _this=this;
@@ -24,7 +32,7 @@
             if(prop.indexOf('t')===0){
               mesh.position[prop[1]] = _this[prop];
             } else if(prop.indexOf('r')===0){
-              mesh.rotation[prop[1]] = _this[prop];
+              mesh.rotation[prop[1]] = _this[prop]* (Math.PI/180);
             } else {
               mesh.scale[prop[1]] = _this[prop];
             }

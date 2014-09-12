@@ -1,0 +1,21 @@
+<link rel="import" href="./library.html">
+
+<polymer-element name="so-directional-light" attributes="color x y z" noscript>
+  <template>
+  </template>
+  <script>
+    Polymer('so-directional-light', {
+      // initialize the element's model
+      attached: function() {
+        var scene = getScene(this);
+        var directionalLight = new THREE.DirectionalLight(this.attributes.color.value);
+        directionalLight.position.set(
+          this.attributes.x.value, 
+          this.attributes.y.value, 
+          this.attributes.z.value
+        ).normalize();
+        scene.scene.add( directionalLight );
+      }
+    });
+  </script>
+</polymer-element>

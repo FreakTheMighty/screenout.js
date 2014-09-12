@@ -1,0 +1,16 @@
+<link rel="import" href="./library.html">
+
+<polymer-element name="so-ambient-light" attributes="color" noscript>
+  <template>
+  </template>
+  <script>
+    Polymer('so-ambient-light', {
+      // initialize the element's model
+      attached: function() {
+        var scene = getScene(this);
+        var ambientLight = new THREE.AmbientLight(this.attributes.color.value);
+        scene.scene.add( ambientLight );
+      }
+    });
+  </script>
+</polymer-element>
